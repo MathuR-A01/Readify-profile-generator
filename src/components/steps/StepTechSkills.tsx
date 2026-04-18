@@ -86,7 +86,7 @@ export default function StepTechSkills() {
             </button>
           );
         })}
-        {list.length === 0 && <p className="text-xs p-2" style={{ color: 'var(--text-3)' }}>No skills match "{search}"</p>}
+        {list.length === 0 && <p className="text-xs p-2" style={{ color: 'var(--text-3)' }}>No skills match &quot;{search}&quot;</p>}
       </div>
 
       {/* Selected chips with remove */}
