@@ -19,7 +19,7 @@ const STEP_MAP: Record<string, React.ComponentType> = {
 };
 
 export default function FormPanel() {
-  const { profileType, currentStep, setCurrentStep } = useProfileStore();
+  const { profileType, currentStep, setCurrentStep, setIsFinished } = useProfileStore();
   const steps = PROFILE_TYPE_META[profileType].steps;
   const stepName = steps[currentStep];
   const StepComp = STEP_MAP[stepName];
@@ -56,7 +56,8 @@ export default function FormPanel() {
         </span>
 
         {isLast ? (
-          <button id="doneBtn" className="btn btn-primary btn-sm">
+          <button id="doneBtn" className="btn btn-primary btn-sm"
+            onClick={() => setIsFinished(true)}>
             ✨ Done!
           </button>
         ) : (

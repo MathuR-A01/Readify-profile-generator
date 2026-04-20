@@ -108,6 +108,7 @@ export interface WakaTimeConfig {
 export interface ProfileState {
   profileType: ProfileType;
   currentStep: number;
+  isFinished: boolean;
   personal: PersonalInfo;
   about: AboutMe;
   skills: TechSkills;
@@ -122,6 +123,7 @@ export interface ProfileState {
 export interface ProfileActions {
   setProfileType: (t: ProfileType) => void;
   setCurrentStep: (s: number) => void;
+  setIsFinished: (v: boolean) => void;
   setPersonal: (d: Partial<PersonalInfo>) => void;
   setAbout: (d: Partial<AboutMe>) => void;
   setSkills: (d: Partial<TechSkills>) => void;
@@ -131,6 +133,7 @@ export interface ProfileActions {
   setExtras: (d: Partial<Extras>) => void;
   setWakaTime: (d: Partial<WakaTimeConfig>) => void;
   setReadmeTheme: (t: string) => void;
+  resetStore: () => void;
 }
 
 export type ProfileStore = ProfileState & ProfileActions;

@@ -49,6 +49,7 @@ const defaultWakaTime: WakaTimeConfig = {
 export const useProfileStore = create<ProfileStore>((set) => ({
   profileType: 'student',
   currentStep: 0,
+  isFinished: false,
   personal: defaultPersonal,
   about: defaultAbout,
   skills: defaultSkills,
@@ -61,6 +62,7 @@ export const useProfileStore = create<ProfileStore>((set) => ({
 
   setProfileType: (t: ProfileType) => set({ profileType: t }),
   setCurrentStep: (s: number) => set({ currentStep: s }),
+  setIsFinished: (v: boolean) => set({ isFinished: v }),
   setPersonal: (d: Partial<PersonalInfo>) => set((st) => ({ personal: { ...st.personal, ...d } })),
   setAbout: (d: Partial<AboutMe>) => set((st) => ({ about: { ...st.about, ...d } })),
   setSkills: (d: Partial<TechSkills>) => set((st) => ({ skills: { ...st.skills, ...d } })),
@@ -70,4 +72,18 @@ export const useProfileStore = create<ProfileStore>((set) => ({
   setExtras: (d: Partial<Extras>) => set((st) => ({ extras: { ...st.extras, ...d } })),
   setWakaTime: (d: Partial<WakaTimeConfig>) => set((st) => ({ wakatime: { ...st.wakatime, ...d } })),
   setReadmeTheme: (t: string) => set({ readmeTheme: t }),
+
+  resetStore: () => set({
+    currentStep: 0,
+    isFinished: false,
+    personal: defaultPersonal,
+    about: defaultAbout,
+    skills: defaultSkills,
+    githubStats: defaultGithubStats,
+    projects: [],
+    social: defaultSocial,
+    extras: defaultExtras,
+    wakatime: defaultWakaTime,
+    readmeTheme: 'tokyonight',
+  }),
 }));

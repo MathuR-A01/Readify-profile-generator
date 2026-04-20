@@ -3,11 +3,12 @@ import Navbar from '@/components/Navbar';
 import FormPanel from '@/components/editor/FormPanel';
 import PreviewPanel from '@/components/editor/PreviewPanel';
 import StepProgress from '@/components/editor/StepProgress';
+import CompletionView from '@/components/editor/CompletionView';
 import { useProfileStore } from '@/store/useProfileStore';
 import { PROFILE_TYPE_META } from '@/lib/data';
 
 export default function EditorPage() {
-  const { profileType } = useProfileStore();
+  const { profileType, isFinished } = useProfileStore();
   const meta = PROFILE_TYPE_META[profileType];
 
   return (
@@ -47,6 +48,9 @@ export default function EditorPage() {
           <PreviewPanel />
         </div>
       </div>
+
+      {/* Full-screen completion overlay */}
+      {isFinished && <CompletionView />}
     </div>
   );
 }

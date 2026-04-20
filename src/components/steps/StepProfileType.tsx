@@ -7,9 +7,10 @@ import { CheckCircle2, ChevronRight } from 'lucide-react';
 const TYPES: ProfileType[] = ['student', 'professional', 'expert'];
 
 export default function StepProfileType() {
-  const { profileType, setProfileType, setCurrentStep } = useProfileStore();
+  const { profileType, setProfileType, setCurrentStep, resetStore } = useProfileStore();
 
   const pick = (t: ProfileType) => {
+    resetStore();
     setProfileType(t);
     setTimeout(() => setCurrentStep(1), 250);
   };
