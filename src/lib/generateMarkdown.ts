@@ -4,11 +4,12 @@ import { getBadgeUrl } from './data';
 // ─── Helper: clean GitHub username (strips URL, spaces, invalid chars) ────────
 function cleanUsername(raw: string): string {
   const cleaned = (raw || '')
-    .replace(/^https?:\/\/(www\.)?github\.com\//i, '')
-    .replace(/\/$/, '')
-    .split('/')[0]
-    .replace(/[^a-zA-Z0-9-]/g, '')   // remove spaces & special chars
-    .replace(/^-+|-+$/g, '')          // strip leading/trailing hyphens
+    .replace(/^https?:\/\/(www\.)?github\.com\//i, '') // strip domain
+    .replace(/^@/, '')                                 // strip @ prefix
+    .replace(/\/$/, '')                               // strip trailing slash
+    .split('/')[0]                                    // take first path part
+    .replace(/[^a-zA-Z0-9-]/g, '')                    // github only allows alphanumeric and hyphens
+    .replace(/^-+|-+$/g, '')                          // strip leading/trailing hyphens
     .trim();
   return cleaned || 'yourusername';
 }
@@ -30,6 +31,7 @@ export function generateMarkdown(s: ProfileState): string {
   const { personal, about, skills, githubStats, projects, social, extras, wakatime, readmeTheme, profileType } = s;
 
   const u  = cleanUsername(personal.githubUsername);
+  const cache = 'cache_seconds=1800'; // 30 minutes cache for more "dynamic" updates
   const em = (emoji: string, label: string) => extras.showEmojiHeaders ? `${emoji} ${label}` : label;
 
   let md = '';
@@ -144,16 +146,17 @@ export function generateMarkdown(s: ProfileState): string {
     if (githubStats.showStats || githubStats.showLanguages) {
       md += `<p align="center">\n`;
       if (githubStats.showStats) {
-        md += `  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${readmeTheme}&include_all_commits=true&count_private=true&hide_border=true" alt="GitHub Stats" />\n`;
+        const rank = githubStats.hideRank ? '&hide_rank=true' : '';
+        md += `  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${readmeTheme}&include_all_commits=true&count_private=true&hide_border=true${rank}&${cache}" alt="GitHub Stats" />\n`;
       }
       if (githubStats.showLanguages) {
-        md += `  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=${githubStats.statsLayout}&langs_count=8&theme=${readmeTheme}&hide_border=true" alt="Top Languages" />\n`;
+        md += `  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=${githubStats.statsLayout}&langs_count=8&theme=${readmeTheme}&hide_border=true&count_private=true&include_all_commits=true&${cache}" alt="Top Languages" />\n`;
       }
       md += `</p>\n\n`;
     }
 
     if (githubStats.showStreak) {
-      md += `<p align="center">\n  <img src="https://github-readme-streak-stats.herokuapp.com/?user=${u}&theme=${readmeTheme}&hide_border=true" alt="GitHub Streak" />\n</p>\n\n`;
+      md += `<p align="center">\n  <img src="https://github-readme-streak-stats.herokuapp.com/?user=${u}&theme=${readmeTheme}&hide_border=true&${cache}" alt="GitHub Streak" />\n</p>\n\n`;
     }
     if (githubStats.showTrophies) {
       md += `<p align="center">\n  <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${readmeTheme}&no-frame=true&row=1&column=7" alt="Trophies" />\n</p>\n\n`;
@@ -162,7 +165,7 @@ export function generateMarkdown(s: ProfileState): string {
       // Use WakaTime coding graph if chosen AND username is provided, else default to GitHub graph
       const useWaka = githubStats.activityGraphSource === 'wakatime' && wakatime.username?.trim();
       if (useWaka) {
-        md += `<p align="center">\n  <img src="https://github-readme-stats.vercel.app/api/wakatime?username=${wakatime.username!.trim()}&theme=${readmeTheme}&hide_border=true&layout=compact&langs_count=10" alt="WakaTime Coding Activity" />\n</p>\n\n`;
+        md += `<p align="center">\n  <img src="https://github-readme-stats.vercel.app/api/wakatime?username=${wakatime.username!.trim()}&theme=${readmeTheme}&hide_border=true&layout=compact&langs_count=10&${cache}" alt="WakaTime Coding Activity" />\n</p>\n\n`;
       } else {
         md += `<p align="center">\n  <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${readmeTheme}&hide_border=true&area=true" alt="GitHub Activity Graph" />\n</p>\n\n`;
       }

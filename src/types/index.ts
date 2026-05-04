@@ -54,6 +54,7 @@ export interface GitHubStats {
   showActivityGraph: boolean;
   activityGraphSource: 'github' | 'wakatime'; // which graph to embed
   showViews: boolean;
+  hideRank: boolean;
   statsTheme: string;
   statsLayout: string;
 }

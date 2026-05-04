@@ -23,7 +23,7 @@ function Row({ id, label, desc, checked, onChange }: {
 }
 
 export default function StepGitHubStats() {
-  const { githubStats, setGithubStats } = useProfileStore();
+  const { githubStats, setGithubStats, readmeTheme, setReadmeTheme } = useProfileStore();
 
   return (
     <div className="step-panel flex flex-col gap-5">
@@ -36,6 +36,7 @@ export default function StepGitHubStats() {
         <Row id="showStreak"    label="🔥 Streak Stats"          desc="Current & longest contribution streak"   checked={githubStats.showStreak}        onChange={v => setGithubStats({ showStreak: v })} />
         <Row id="showTrophies"  label="🏆 GitHub Trophies"       desc="Achievement badges from activity"        checked={githubStats.showTrophies}      onChange={v => setGithubStats({ showTrophies: v })} />
         <Row id="showViews"     label="👁️ Profile Views Counter" desc="Badge tracking profile visitors"         checked={githubStats.showViews}         onChange={v => setGithubStats({ showViews: v })} />
+        <Row id="hideRank"      label="🚫 Hide Rank / Grade"     desc="Hide the C+/A+ grade on your stats card" checked={githubStats.hideRank}          onChange={v => setGithubStats({ hideRank: v })} />
 
         {/* Activity Graph toggle + source choice */}
         <div className="py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
@@ -132,12 +133,15 @@ export default function StepGitHubStats() {
         <div className="grid grid-cols-3 gap-2">
           {THEMES.map(t => (
             <button key={t} id={`statsTheme-${t}`}
-              onClick={() => setGithubStats({ statsTheme: t })}
+              onClick={() => {
+                setGithubStats({ statsTheme: t });
+                setReadmeTheme(t);
+              }}
               className="text-xs py-2 px-3 rounded-lg font-medium transition-all cursor-pointer"
               style={{
-                background: githubStats.statsTheme === t ? 'rgba(124,58,237,0.2)' : 'rgba(255,255,255,0.04)',
-                border: githubStats.statsTheme === t ? '1px solid rgba(124,58,237,0.5)' : '1px solid rgba(255,255,255,0.08)',
-                color: githubStats.statsTheme === t ? '#c4b5fd' : 'var(--text-3)',
+                background: (githubStats.statsTheme === t || readmeTheme === t) ? 'rgba(124,58,237,0.2)' : 'rgba(255,255,255,0.04)',
+                border: (githubStats.statsTheme === t || readmeTheme === t) ? '1px solid rgba(124,58,237,0.5)' : '1px solid rgba(255,255,255,0.08)',
+                color: (githubStats.statsTheme === t || readmeTheme === t) ? '#c4b5fd' : 'var(--text-3)',
               }}>
               {t}
             </button>

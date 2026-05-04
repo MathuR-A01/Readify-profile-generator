@@ -26,6 +26,7 @@ const defaultGithubStats: GitHubStats = {
   showTrophies: false, showActivityGraph: false,
   activityGraphSource: 'github',
   showViews: true,
+  hideRank: false,
   statsTheme: 'tokyonight', statsLayout: 'compact',
 };
 
