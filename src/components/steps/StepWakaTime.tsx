@@ -33,7 +33,7 @@ export default function StepWakaTime() {
   const username = wakatime.username.trim();
 
   const wakaCardUrl = username
-    ? `https://github-readme-stats.vercel.app/api/wakatime?username=${encodeURIComponent(username)}&theme=${wakatime.cardTheme}&layout=${wakatime.layoutStyle}&hide_border=true&range=${wakatime.statsRange}&cache_seconds=${Date.now()}`
+    ? `/api/wakatime?username=${encodeURIComponent(username)}&theme=${wakatime.cardTheme}&layout=${wakatime.layoutStyle}&hide_border=true&range=${wakatime.statsRange}&cache_seconds=${Date.now()}`
     : '';
 
   const refreshPreview = () => {

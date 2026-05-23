@@ -34,7 +34,7 @@ export function generateMarkdown(s: ProfileState): string {
   const cache = 'cache_seconds=1800'; // 30 minutes cache for more "dynamic" updates
   // Use sigma-five mirror (more reliable than the overloaded main vercel instance)
   const STATS_BASE = 'https://github-readme-stats-sigma-five.vercel.app';
-  const WAKA_BASE  = 'https://github-readme-stats.vercel.app'; // keeps wakatime endpoint working
+  const WAKA_BASE  = 'https://readify-generator.vercel.app'; // self-hosted API proxy endpoint
   const em = (emoji: string, label: string) => extras.showEmojiHeaders ? `${emoji} ${label}` : label;
 
   let md = '';
