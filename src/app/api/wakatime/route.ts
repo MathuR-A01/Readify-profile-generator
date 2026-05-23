@@ -174,16 +174,12 @@ function renderCompactSvg(stats: WakaStats, themeName: string, maxLangs: number,
   const barHeight = 12;
   const barY = 62;
   
-  const barSegments = langs.map((lang, idx) => {
+  const barSegments = langs.map((lang) => {
     // scale to fill displayed bar
     const segmentWidth = (lang.percent / (displayedPercent || 100)) * barWidth;
     const color = getLanguageColor(lang.name);
     
-    // Draw rect segments. Rounded corners on outer edges
-    const isFirst = idx === 0;
-    const isLast = idx === langs.length - 1;
-    const rLeft = isFirst ? 6 : 0;
-    const rRight = isLast ? 6 : 0;
+    // Draw rect segments. Outer corners are rounded automatically by the svg progress-bar mask
 
     const rect = `<rect x="${25 + currentOffset}" y="${barY}" width="${segmentWidth}" height="${barHeight}" fill="${color}" />`;
     currentOffset += segmentWidth;
@@ -333,7 +329,22 @@ export async function GET(req: NextRequest) {
   ].filter((value, idx, self) => self.indexOf(value) === idx);
 
   let fetchError = 'No data fetched';
-  let fetchedData: any = null;
+  let fetchedData: {
+    username?: string;
+    human_readable_range?: string;
+    total_seconds?: number;
+    human_readable_total?: string;
+    languages?: Array<{
+      name?: string;
+      total_seconds?: number;
+      percent?: number;
+      digital?: string;
+      decimal?: string;
+      text?: string;
+      hours?: number;
+      minutes?: number;
+    }>;
+  } | null = null;
 
   // Attempt requests sequentially through the range fallbacks to solve the public stats range restriction bug!
   for (const rangeToFetch of rangesToTry) {
@@ -375,8 +386,8 @@ export async function GET(req: NextRequest) {
         fetchedData = body.data;
         break; // Success!
       }
-    } catch (e: any) {
-      fetchError = e?.message || 'Network request failed';
+    } catch (e: unknown) {
+      fetchError = e instanceof Error ? e.message : 'Network request failed';
       // Proceed to try next range
     }
   }
@@ -392,7 +403,7 @@ export async function GET(req: NextRequest) {
     human_readable_range: fetchedData.human_readable_range || requestedRange,
     total_seconds: fetchedData.total_seconds || 0,
     human_readable_total: fetchedData.human_readable_total || '0 hrs 0 mins',
-    languages: (fetchedData.languages || []).map((lang: any) => ({
+    languages: (fetchedData.languages || []).map((lang) => ({
       name: lang.name || 'Unknown',
       total_seconds: lang.total_seconds || 0,
       percent: lang.percent || 0,
