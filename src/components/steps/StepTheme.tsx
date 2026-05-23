@@ -46,7 +46,7 @@ export default function StepTheme() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           key={readmeTheme}
-          src={`https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${readmeTheme}&hide_border=true&count_private=true`}
+          src={`https://github-readme-stats-sigma-five.vercel.app/api?username=${u}&show_icons=true&theme=${readmeTheme}&hide_border=true&count_private=true`}
           alt="theme preview"
           className="w-full rounded-lg"
           style={{ maxHeight: 120, objectFit: 'cover' }}

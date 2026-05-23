@@ -124,7 +124,7 @@ export const PROFILE_TYPE_META: Record<ProfileType, {
     tagline: 'CS students, bootcamp grads & fresh developers',
     accent: '#7c3aed',
     glow: 'rgba(124,58,237,0.4)',
-    steps: ['Profile Type','Personal Info','About Me','Skills','GitHub Stats','Projects','Social Links','Extras','Theme'],
+    steps: ['Profile Type','Personal Info','About Me','Skills','GitHub Stats','Projects','WakaTime','Social Links','Extras','Theme'],
   },
   professional: {
     label: 'Professional',
@@ -132,7 +132,7 @@ export const PROFILE_TYPE_META: Record<ProfileType, {
     tagline: 'Working developers, engineers & tech leads',
     accent: '#0ea5e9',
     glow: 'rgba(14,165,233,0.4)',
-    steps: ['Profile Type','Personal Info','About Me','Skills','GitHub Stats','Projects','Social Links','Extras','Theme'],
+    steps: ['Profile Type','Personal Info','About Me','Skills','GitHub Stats','Projects','WakaTime','Social Links','Extras','Theme'],
   },
   expert: {
     label: 'Expert / OSS',

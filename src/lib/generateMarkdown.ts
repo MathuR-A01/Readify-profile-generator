@@ -32,6 +32,9 @@ export function generateMarkdown(s: ProfileState): string {
 
   const u  = cleanUsername(personal.githubUsername);
   const cache = 'cache_seconds=1800'; // 30 minutes cache for more "dynamic" updates
+  // Use sigma-five mirror (more reliable than the overloaded main vercel instance)
+  const STATS_BASE = 'https://github-readme-stats-sigma-five.vercel.app';
+  const WAKA_BASE  = 'https://github-readme-stats.vercel.app'; // keeps wakatime endpoint working
   const em = (emoji: string, label: string) => extras.showEmojiHeaders ? `${emoji} ${label}` : label;
 
   let md = '';
@@ -147,25 +150,25 @@ export function generateMarkdown(s: ProfileState): string {
       md += `<p align="center">\n`;
       if (githubStats.showStats) {
         const rank = githubStats.hideRank ? '&hide_rank=true' : '';
-        md += `  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=${u}&show_icons=true&theme=${readmeTheme}&include_all_commits=true&count_private=true&hide_border=true${rank}&${cache}" alt="GitHub Stats" />\n`;
+        md += `  <img height="180em" src="${STATS_BASE}/api?username=${u}&show_icons=true&theme=${readmeTheme}&include_all_commits=true&count_private=true&hide_border=true${rank}&${cache}" alt="GitHub Stats" />\n`;
       }
       if (githubStats.showLanguages) {
-        md += `  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=${u}&layout=${githubStats.statsLayout}&langs_count=8&theme=${readmeTheme}&hide_border=true&count_private=true&include_all_commits=true&${cache}" alt="Top Languages" />\n`;
+        md += `  <img height="180em" src="${STATS_BASE}/api/top-langs/?username=${u}&layout=${githubStats.statsLayout}&langs_count=8&theme=${readmeTheme}&hide_border=true&count_private=true&include_all_commits=true&${cache}" alt="Top Languages" />\n`;
       }
       md += `</p>\n\n`;
     }
 
     if (githubStats.showStreak) {
-      md += `<p align="center">\n  <img src="https://github-readme-streak-stats.herokuapp.com/?user=${u}&theme=${readmeTheme}&hide_border=true&${cache}" alt="GitHub Streak" />\n</p>\n\n`;
+      md += `<p align="center">\n  <img src="https://streak-stats.demolab.com/?user=${u}&theme=${readmeTheme}&hide_border=true&${cache}" alt="GitHub Streak" />\n</p>\n\n`;
     }
     if (githubStats.showTrophies) {
-      md += `<p align="center">\n  <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${readmeTheme}&no-frame=true&row=1&column=7" alt="Trophies" />\n</p>\n\n`;
+      md += `<p align="center">\n  <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${readmeTheme}&no-frame=true&no-bg=true&row=1&column=7" alt="Trophies" />\n</p>\n\n`;
     }
     if (githubStats.showActivityGraph) {
       // Use WakaTime coding graph if chosen AND username is provided, else default to GitHub graph
       const useWaka = githubStats.activityGraphSource === 'wakatime' && wakatime.username?.trim();
       if (useWaka) {
-        md += `<p align="center">\n  <img src="https://github-readme-stats.vercel.app/api/wakatime?username=${wakatime.username!.trim()}&theme=${readmeTheme}&hide_border=true&layout=compact&langs_count=10&${cache}" alt="WakaTime Coding Activity" />\n</p>\n\n`;
+        md += `<p align="center">\n  <img src="${WAKA_BASE}/api/wakatime?username=${wakatime.username!.trim()}&theme=${readmeTheme}&hide_border=true&layout=compact&langs_count=10&range=${wakatime.statsRange}&${cache}" alt="WakaTime Coding Activity" />\n</p>\n\n`;
       } else {
         md += `<p align="center">\n  <img src="https://github-readme-activity-graph.vercel.app/graph?username=${u}&theme=${readmeTheme}&hide_border=true&area=true" alt="GitHub Activity Graph" />\n</p>\n\n`;
       }
@@ -190,7 +193,7 @@ export function generateMarkdown(s: ProfileState): string {
   if (wakatime.username?.trim() && wakatime.showCard) {
     md += `## ${em('⏱️', 'Coding Activity')}\n\n`;
     md += `<p align="center">\n`;
-    md += `  <img src="https://github-readme-stats.vercel.app/api/wakatime?username=${wakatime.username.trim()}&theme=${wakatime.cardTheme}&layout=${wakatime.layoutStyle}&hide_border=true" alt="WakaTime Stats" />\n`;
+    md += `  <img src="${WAKA_BASE}/api/wakatime?username=${wakatime.username.trim()}&theme=${wakatime.cardTheme}&layout=${wakatime.layoutStyle}&hide_border=true&range=${wakatime.statsRange}" alt="WakaTime Stats" />\n`;
     md += `</p>\n\n`;
     if (wakatime.enableAction) md += `<!--START_SECTION:waka-->\n<!--END_SECTION:waka-->\n\n`;
     if (extras.showDividers) md += `---\n\n`;
