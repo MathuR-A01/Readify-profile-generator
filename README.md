@@ -1,10 +1,6 @@
 # <p align="center">Readify — GitHub README Profile Generator</p>
 
 <p align="center">
-  <img src="public/banner.png" alt="Readify Banner" width="100%" />
-</p>
-
-<p align="center">
   <a href="https://readify-generator.vercel.app"><b>Live Demo →</b></a>
   &nbsp;•&nbsp;
   <a href="https://github.com/MathuR-A01/Readify-profile-generator/issues">Report Bug</a>
