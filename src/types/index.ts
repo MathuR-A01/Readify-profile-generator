@@ -45,6 +45,7 @@ export interface TechSkills {
   aiml: string[];
   tools: string[];
   custom?: string[];
+  [key: string]: string[] | undefined;
 }
 
 export interface GitHubStats {

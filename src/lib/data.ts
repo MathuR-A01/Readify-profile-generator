@@ -42,7 +42,7 @@ export const SKILLS_DATA: Record<string, string[]> = {
   custom: [],
 };
 
-export type SkillCategory = keyof typeof SKILLS_DATA;
+export type SkillCategory = 'languages' | 'frontend' | 'backend' | 'databases' | 'devops' | 'mobile' | 'aiml' | 'tools' | 'custom';
 
 // ─── Badge URL Generator ──────────────────────────────────────────────────────
 const BADGE_OVERRIDES: Record<string, string> = {

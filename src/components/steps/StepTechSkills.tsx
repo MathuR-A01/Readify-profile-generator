@@ -13,7 +13,7 @@ export default function StepTechSkills() {
   const [customInput, setCustomInput] = useState('');
 
   const toggle = (cat: SkillCategory, name: string) => {
-    const cur = skills[cat] ?? [];
+    const cur = (skills[cat] ?? []) as string[];
     setSkills({ [cat]: cur.includes(name) ? cur.filter(s => s !== name) : [...cur, name] });
   };
 
@@ -31,7 +31,7 @@ export default function StepTechSkills() {
   const totalSelected = CATS.reduce((sum, c) => sum + (skills[c]?.length ?? 0), 0);
 
   // Combine predefined skills with user custom skills
-  const getSkillsForCat = (cat: SkillCategory): string[] => {
+  const getSkillsForCat = (cat: SkillCategory): readonly string[] => {
     if (cat === 'custom') {
       return skills.custom ?? [];
     }
