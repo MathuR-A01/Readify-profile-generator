@@ -1,18 +1,5 @@
 import { ProfileState, SocialLinks } from '@/types';
-import { getBadgeUrl } from './data';
-
-// ─── Helper: clean GitHub username (strips URL, spaces, invalid chars) ────────
-function cleanUsername(raw: string): string {
-  const cleaned = (raw || '')
-    .replace(/^https?:\/\/(www\.)?github\.com\//i, '') // strip domain
-    .replace(/^@/, '')                                 // strip @ prefix
-    .replace(/\/$/, '')                               // strip trailing slash
-    .split('/')[0]                                    // take first path part
-    .replace(/[^a-zA-Z0-9-]/g, '')                    // github only allows alphanumeric and hyphens
-    .replace(/^-+|-+$/g, '')                          // strip leading/trailing hyphens
-    .trim();
-  return cleaned || 'yourusername';
-}
+import { getBadgeUrl, cleanUsername } from './data';
 
 // ─── Social badge definitions ─────────────────────────────────────────────────
 const SOCIAL_BADGES: Array<{ key: keyof SocialLinks; label: string; color: string; logo: string }> = [
@@ -31,10 +18,11 @@ export function generateMarkdown(s: ProfileState): string {
   const { personal, about, skills, githubStats, projects, social, extras, wakatime, readmeTheme, profileType } = s;
 
   const u  = cleanUsername(personal.githubUsername);
-  const cache = 'cache_seconds=1800'; // 30 minutes cache for more "dynamic" updates
-  // Use sigma-five mirror (more reliable than the overloaded main vercel instance)
-  const STATS_BASE = 'https://github-readme-stats-sigma-five.vercel.app';
-  const WAKA_BASE  = 'https://readify-generator.vercel.app'; // self-hosted API proxy endpoint
+  const cache = 'cache_seconds=1800'; // 30 minutes cache for dynamic updates
+  const STATS_BASE  = 'https://github-readme-stats-eight-theta.vercel.app';
+  const STREAK_BASE = 'https://streak-stats.demolab.com';
+  const TROPHY_BASE = 'https://github-profile-trophy-eight.vercel.app';
+  const WAKA_BASE   = 'https://readify-generator.vercel.app';
   const em = (emoji: string, label: string) => extras.showEmojiHeaders ? `${emoji} ${label}` : label;
 
   let md = '';
@@ -116,15 +104,17 @@ export function generateMarkdown(s: ProfileState): string {
     ['mobile',    '📱 Mobile'],
     ['aiml',      '🤖 AI / ML'],
     ['tools',     '🛠️ Tools'],
+    ['custom',    '✨ Additional Skills'],
   ];
-  const hasSkills = cats.some(([k]) => skills[k].length > 0);
+  const hasSkills = cats.some(([k]) => (skills[k] ?? []).length > 0);
 
   if (hasSkills) {
     md += `## ${em('🛠️', 'Tech Stack')}\n\n`;
     md += `<table>\n`;
     cats.forEach(([key, label]) => {
-      if (skills[key].length > 0) {
-        const badges = skills[key]
+      const list = skills[key] ?? [];
+      if (list.length > 0) {
+        const badges = list
           .map(n => `<img src="${getBadgeUrl(n)}" alt="${n}" height="28" />`)
           .join(' ');
         md += `  <tr>\n`;
@@ -159,10 +149,10 @@ export function generateMarkdown(s: ProfileState): string {
     }
 
     if (githubStats.showStreak) {
-      md += `<p align="center">\n  <img src="https://streak-stats.demolab.com/?user=${u}&theme=${readmeTheme}&hide_border=true&${cache}" alt="GitHub Streak" />\n</p>\n\n`;
+      md += `<p align="center">\n  <img src="${STREAK_BASE}/?user=${u}&theme=${readmeTheme}&hide_border=true&${cache}" alt="GitHub Streak" />\n</p>\n\n`;
     }
     if (githubStats.showTrophies) {
-      md += `<p align="center">\n  <img src="https://github-profile-trophy.vercel.app/?username=${u}&theme=${readmeTheme}&no-frame=true&no-bg=true&row=1&column=7" alt="Trophies" />\n</p>\n\n`;
+      md += `<p align="center">\n  <img src="${TROPHY_BASE}/?username=${u}&theme=${readmeTheme}&no-frame=true&no-bg=true&row=1&column=7" alt="Trophies" />\n</p>\n\n`;
     }
     if (githubStats.showActivityGraph) {
       // Use WakaTime coding graph if chosen AND username is provided, else default to GitHub graph

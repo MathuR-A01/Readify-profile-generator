@@ -1,8 +1,8 @@
 'use client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useProfileStore } from '@/store/useProfileStore';
 import { SKILLS_DATA, CATEGORY_LABELS, SkillCategory } from '@/lib/data';
-import { Code2, Search, X } from 'lucide-react';
+import { Code2, Search, X, Plus, Sparkles } from 'lucide-react';
 
 const CATS = Object.keys(SKILLS_DATA) as SkillCategory[];
 
@@ -10,21 +10,40 @@ export default function StepTechSkills() {
   const { skills, setSkills } = useProfileStore();
   const [activeTab, setActiveTab] = useState<SkillCategory>('languages');
   const [search, setSearch] = useState('');
+  const [customInput, setCustomInput] = useState('');
 
   const toggle = (cat: SkillCategory, name: string) => {
     const cur = skills[cat] ?? [];
     setSkills({ [cat]: cur.includes(name) ? cur.filter(s => s !== name) : [...cur, name] });
   };
 
+  const addCustomSkill = () => {
+    const trimmed = customInput.trim();
+    if (!trimmed) return;
+    const curCustom = skills.custom ?? [];
+    if (!curCustom.includes(trimmed)) {
+      setSkills({ custom: [...curCustom, trimmed] });
+    }
+    setCustomInput('');
+    setActiveTab('custom');
+  };
+
   const totalSelected = CATS.reduce((sum, c) => sum + (skills[c]?.length ?? 0), 0);
 
-  // Build list to show
+  // Combine predefined skills with user custom skills
+  const getSkillsForCat = (cat: SkillCategory): string[] => {
+    if (cat === 'custom') {
+      return skills.custom ?? [];
+    }
+    return (SKILLS_DATA[cat] as readonly string[]) || [];
+  };
+
   type SkillEntry = { name: string; cat: SkillCategory };
   const list: SkillEntry[] = search.trim()
-    ? CATS.flatMap(cat => (SKILLS_DATA[cat] as readonly string[])
+    ? CATS.flatMap(cat => getSkillsForCat(cat)
         .filter(n => n.toLowerCase().includes(search.toLowerCase()))
         .map(name => ({ name, cat })))
-    : (SKILLS_DATA[activeTab] as readonly string[]).map(name => ({ name, cat: activeTab }));
+    : getSkillsForCat(activeTab).map(name => ({ name, cat: activeTab }));
 
   return (
     <div className="step-panel flex flex-col gap-4">
@@ -83,10 +102,55 @@ export default function StepTechSkills() {
               className={`skill-badge ${on ? 'on' : ''}`}>
               {on && <span style={{ fontSize: 10 }}>✓</span>}
               {name}
+              {cat === 'custom' && (
+                <span
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const filtered = (skills.custom ?? []).filter(s => s !== name);
+                    setSkills({ custom: filtered });
+                  }}
+                  className="ml-1 hover:text-red-400 font-bold"
+                  style={{ fontSize: 12 }}
+                >
+                  ×
+                </span>
+              )}
             </button>
           );
         })}
-        {list.length === 0 && <p className="text-xs p-2" style={{ color: 'var(--text-3)' }}>No skills match &quot;{search}&quot;</p>}
+        {list.length === 0 && (
+          <p className="text-xs p-2" style={{ color: 'var(--text-3)' }}>
+            {activeTab === 'custom'
+              ? 'No custom skills added yet. Add one below!'
+              : `No skills match "${search}"`}
+          </p>
+        )}
+      </div>
+
+      {/* Add Custom Skill Box */}
+      <div className="p-3.5 rounded-xl flex flex-col gap-2.5"
+           style={{ background: 'rgba(124,58,237,0.05)', border: '1px solid rgba(124,58,237,0.2)' }}>
+        <p className="text-xs font-semibold text-white flex items-center gap-1.5">
+          <Sparkles size={14} style={{ color: '#c4b5fd' }} /> Add Custom Skill or Technology
+        </p>
+        <div className="flex gap-2">
+          <input
+            id="customSkillInput"
+            className="input flex-1"
+            placeholder="e.g. WebGL, ROS, CUDA, WebSockets, Solana..."
+            value={customInput}
+            onChange={e => setCustomInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addCustomSkill(); } }}
+          />
+          <button
+            id="addCustomSkillBtn"
+            onClick={addCustomSkill}
+            disabled={!customInput.trim()}
+            className="btn btn-primary btn-sm flex-shrink-0 gap-1 shadow-md shadow-violet-500/20"
+          >
+            <Plus size={14} /> Add Skill
+          </button>
+        </div>
       </div>
 
       {/* Selected chips with remove */}

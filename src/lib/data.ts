@@ -1,39 +1,46 @@
 import { ProfileType } from '@/types';
 
 // ─── Skill Badge Data ─────────────────────────────────────────────────────────
-export const SKILLS_DATA = {
+export const SKILLS_DATA: Record<string, string[]> = {
   languages: [
-    'JavaScript','TypeScript','Python','Java','C++','C','Go','Rust',
-    'PHP','Ruby','Kotlin','Swift','R','Scala','Dart','Elixir','Haskell',
+    'JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'C', 'C#', 'Go', 'Rust',
+    'PHP', 'Ruby', 'Kotlin', 'Swift', 'R', 'Scala', 'Dart', 'Elixir', 'Haskell',
+    'Zig', 'Solidity', 'Julia', 'Clojure', 'MATLAB', 'Assembly', 'Bash / Shell', 'Lua', 'OCaml', 'F#', 'Groovy', 'Vim Script',
   ],
   frontend: [
-    'React','Next.js','Vue.js','Angular','Svelte','Tailwind CSS','Bootstrap',
-    'Material UI','Remix','Astro','Nuxt.js','SolidJS','Qwik','HTMX',
+    'React', 'Next.js', 'Vue.js', 'Angular', 'Svelte', 'Tailwind CSS', 'Bootstrap',
+    'Material UI', 'Remix', 'Astro', 'Nuxt.js', 'SolidJS', 'Qwik', 'HTMX',
+    'Chakra UI', 'Radix UI', 'Shadcn UI', 'Sass', 'CSS3', 'HTML5', 'Redux', 'Zustand', 'WebAssembly', 'Three.js', 'Alpine.js',
   ],
   backend: [
-    'Node.js','Express.js','Django','FastAPI','Flask','Laravel','Spring Boot',
-    'NestJS','GraphQL','tRPC','Hono','Fiber','Gin','Echo',
+    'Node.js', 'Express.js', 'Django', 'FastAPI', 'Flask', 'Laravel', 'Spring Boot',
+    'NestJS', 'GraphQL', 'tRPC', 'Hono', 'Fiber', 'Gin', 'Echo',
+    'ASP.NET Core', 'Ruby on Rails', 'Phoenix', 'Ktor', 'gRPC', 'RabbitMQ', 'Kafka',
   ],
   databases: [
-    'MySQL','PostgreSQL','MongoDB','Redis','SQLite','Supabase','Firebase',
-    'PlanetScale','Prisma','Drizzle','DynamoDB','Cassandra','InfluxDB',
+    'MySQL', 'PostgreSQL', 'MongoDB', 'Redis', 'SQLite', 'Supabase', 'Firebase',
+    'PlanetScale', 'Prisma', 'Drizzle', 'DynamoDB', 'Cassandra', 'InfluxDB',
+    'MariaDB', 'CockroachDB', 'Elasticsearch', 'ClickHouse', 'FaunaDB', 'Neo4j',
   ],
   devops: [
-    'Docker','Kubernetes','AWS','GCP','Azure','Vercel','Netlify',
-    'Linux','GitHub Actions','Terraform','Nginx','Ansible','Pulumi','Cloudflare',
+    'Docker', 'Kubernetes', 'AWS', 'GCP', 'Azure', 'Vercel', 'Netlify',
+    'Linux', 'GitHub Actions', 'Terraform', 'Nginx', 'Ansible', 'Pulumi', 'Cloudflare',
+    'CircleCI', 'Jenkins', 'ArgoCD', 'Helm', 'Prometheus', 'Grafana', 'Datadog',
   ],
   mobile: [
-    'Flutter','React Native','Swift','Kotlin','Expo','Ionic','Capacitor',
+    'Flutter', 'React Native', 'Swift', 'Kotlin', 'Expo', 'Ionic', 'Capacitor',
+    'Android SDK', 'iOS SDK', 'Xamarin',
   ],
   aiml: [
-    'TensorFlow','PyTorch','Scikit-learn','Hugging Face','LangChain',
-    'OpenCV','Keras','Pandas','NumPy','NLTK','spaCy','Ollama',
+    'TensorFlow', 'PyTorch', 'Scikit-learn', 'Hugging Face', 'LangChain', 'LlamaIndex',
+    'OpenCV', 'Keras', 'Pandas', 'NumPy', 'NLTK', 'spaCy', 'Ollama', 'Pinecone', 'ChromaDB', 'Jupyter',
   ],
   tools: [
-    'Git','GitHub','VS Code','Figma','Postman','Jira','Notion',
-    'Linux','Vim','Neovim','Obsidian','Slack','Docker','Webpack','Vite',
+    'Git', 'GitHub', 'VS Code', 'Figma', 'Postman', 'Jira', 'Notion',
+    'Linux', 'Vim', 'Neovim', 'Obsidian', 'Slack', 'Docker', 'Webpack', 'Vite', 'Turbopack', 'Babel', 'ESLint', 'Prettier', 'pnpm', 'Yarn',
   ],
-} as const;
+  custom: [],
+};
 
 export type SkillCategory = keyof typeof SKILLS_DATA;
 
@@ -144,7 +151,7 @@ export const PROFILE_TYPE_META: Record<ProfileType, {
   },
 };
 
-export const CATEGORY_LABELS: Record<SkillCategory, string> = {
+export const CATEGORY_LABELS: Record<string, string> = {
   languages: '💻 Languages',
   frontend:  '🎨 Frontend',
   backend:   '⚙️ Backend',
@@ -153,4 +160,20 @@ export const CATEGORY_LABELS: Record<SkillCategory, string> = {
   mobile:    '📱 Mobile',
   aiml:      '🤖 AI / ML',
   tools:     '🛠️ Tools',
+  custom:    '✨ Additional Skills',
 };
+
+// ─── Utility: Clean GitHub Username ─────────────────────────────────────────
+export function cleanUsername(raw?: string, defaultUser = 'yourusername'): string {
+  if (!raw) return defaultUser;
+  const cleaned = raw
+    .replace(/^https?:\/\/(www\.)?github\.com\//i, '')
+    .replace(/^@/, '')
+    .replace(/\/$/, '')
+    .split('/')[0]
+    .replace(/[^a-zA-Z0-9-]/g, '')
+    .replace(/^-+|-+$/g, '')
+    .trim();
+  return cleaned || defaultUser;
+}
+

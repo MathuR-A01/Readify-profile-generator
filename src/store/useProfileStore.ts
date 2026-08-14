@@ -18,7 +18,7 @@ const defaultAbout: AboutMe = {
 
 const defaultSkills: TechSkills = {
   languages: [], frontend: [], backend: [], databases: [],
-  devops: [], mobile: [], aiml: [], tools: [],
+  devops: [], mobile: [], aiml: [], tools: [], custom: [],
 };
 
 const defaultGithubStats: GitHubStats = {

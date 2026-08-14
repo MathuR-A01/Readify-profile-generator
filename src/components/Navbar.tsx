@@ -28,7 +28,7 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
-          <a href="https://github.com/MathuR-A01" target="_blank" rel="noreferrer"
+          <a href="https://github.com/MathuR-A01/Readify-profile-generator" target="_blank" rel="noreferrer"
             className="flex items-center gap-1.5 transition-colors hover:text-white"
             style={{ color: 'var(--text-2)', textDecoration: 'none' }}>
             <GitBranch size={14} /> GitHub
@@ -37,10 +37,11 @@ export default function Navbar() {
 
         {/* CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium"
-               style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)', color: '#f59e0b' }}>
+          <a href="https://github.com/MathuR-A01/Readify-profile-generator" target="_blank" rel="noreferrer"
+             className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all hover:scale-105 cursor-pointer"
+             style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.3)', color: '#f59e0b', textDecoration: 'none' }}>
             <Star size={11} fill="#f59e0b" /> Star us
-          </div>
+          </a>
           <Link href="/editor">
             <button className="btn btn-primary btn-sm">
               <Zap size={13} /> Generate README

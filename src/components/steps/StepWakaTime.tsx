@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useProfileStore } from '@/store/useProfileStore';
 import { Clock, Info, ExternalLink, RefreshCw, AlertTriangle } from 'lucide-react';
 

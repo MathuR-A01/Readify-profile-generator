@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useProfileStore } from '@/store/useProfileStore';
 import { generateMarkdown } from '@/lib/generateMarkdown';
 import ReactMarkdown from 'react-markdown';
@@ -13,6 +13,9 @@ export default function PreviewPanel() {
   const [copied, setCopied] = useState(false);
 
   const md = useMemo(() => generateMarkdown(store), [store]);
+
+  const rawPlugin = (rehypeRaw as any)?.default || rehypeRaw;
+  const gfmPlugin = (remarkGfm as any)?.default || remarkGfm;
 
   const copy = useCallback(async () => {
     await navigator.clipboard.writeText(md);
@@ -72,7 +75,7 @@ export default function PreviewPanel() {
           </div>
         ) : tab === 'preview' ? (
           <div className="md-preview prose-invert max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>{md}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[gfmPlugin]} rehypePlugins={[rawPlugin]}>{md}</ReactMarkdown>
           </div>
         ) : (
           <div className="code-view">{md}</div>

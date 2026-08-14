@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 import { useProfileStore } from '@/store/useProfileStore';
 import { BarChart3, Info } from 'lucide-react';
 

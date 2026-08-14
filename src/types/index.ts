@@ -44,6 +44,7 @@ export interface TechSkills {
   mobile: string[];
   aiml: string[];
   tools: string[];
+  custom?: string[];
 }
 
 export interface GitHubStats {

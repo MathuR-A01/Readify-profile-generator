@@ -85,7 +85,7 @@ export default function HomePage() {
                 <ChevronRight size={15} />
               </button>
             </Link>
-            <a href="https://github.com/MathuR-A01" target="_blank" rel="noreferrer">
+            <a href="https://github.com/MathuR-A01/Readify-profile-generator" target="_blank" rel="noreferrer">
               <button className="btn btn-outline" style={{ padding: '13px 26px', fontSize: '14px', borderRadius: '12px' }}>
                 ⭐ Star on GitHub
               </button>
@@ -189,7 +189,7 @@ export default function HomePage() {
       <footer className="site-footer relative z-10 py-7 px-4 text-center border-t" style={{ borderColor: 'rgba(99,102,241,0.1)' }}>
         <p style={{ color: 'var(--text-3)', fontSize: '12.5px' }}>
           Built with ❤️ for developers •{' '}
-          <a href="https://github.com/MathuR-A01" target="_blank" rel="noreferrer" style={{ color: 'var(--violet)', textDecoration: 'none' }}>Open Source</a> • MIT License • Readify
+          <a href="https://github.com/MathuR-A01/Readify-profile-generator" target="_blank" rel="noreferrer" style={{ color: 'var(--violet)', textDecoration: 'none' }}>Open Source</a> • MIT License • Readify
         </p>
       </footer>
     </div>
